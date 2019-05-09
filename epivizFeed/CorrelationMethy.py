@@ -103,13 +103,14 @@ class CorrelationMethy(StatMethod):
                     'attr-one': [min(methy_data[type1]), max(methy_data[type1])],
                     'attr-two': [min(methy_data[type2]), max(methy_data[type2])]
                 }
-                corr_obj = build_obj('correlation', 'methylation diff',
-                                     'methylation diff', True, data_source_one,
-                                     data_source_two,
-                                     correlation_coefficient[0],
-                                     correlation_coefficient[1],
-                                     ranges=data_range)
-                methy_corr_res.append(corr_obj)
+                if correlation_coefficient[1] <= 0.1:
+                    corr_obj = build_obj('correlation', 'methylation diff',
+                                         'methylation diff', True, data_source_one,
+                                         data_source_two,
+                                         correlation_coefficient[0],
+                                         correlation_coefficient[1],
+                                         ranges=data_range)
+                    methy_corr_res.append(corr_obj)
             methy_corr_res = sorted(methy_corr_res, key=lambda x: x['value'],
                                     reverse=True)
 

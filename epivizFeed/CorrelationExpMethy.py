@@ -76,11 +76,12 @@ class CorrelationExpMethy(StatMethod):
             'attr-one': [min(exp_diff), max(exp_diff)],
             'attr-two': [min(methy_col), max(methy_col)]
         }
-        corr_obj = build_exp_methy_obj('correlation', 'expression diff',
-                                       'methylation diff', True, "Expression diff " + tissue_type,
-                                       'Collapsed Methylation Diff ' + tissue_type,
-                                       corr_coef[0], corr_coef[1],
-                                       data=data, ranges=data_range)
+        if corr_coef[1] <= 0.1:
+            corr_obj = build_exp_methy_obj('correlation', 'expression diff',
+                                           'methylation diff', True, "Expression diff " + tissue_type,
+                                           'Collapsed Methylation Diff ' + tissue_type,
+                                           corr_coef[0], corr_coef[1],
+                                           data=data, ranges=data_range)
         return corr_obj
 
     def unpack_params(self, additional):

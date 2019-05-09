@@ -89,11 +89,12 @@ class CorrelationExp(StatMethod):
                 col_two = expression_data[exp2]
 
                 correlation_coefficient = pearsonr(col_one, col_two)
-                corr_obj = build_obj('correlation', 'expression', 'expression',
-                                     True, data_source_one,
-                                     data_source_two, correlation_coefficient[0],
-                                     correlation_coefficient[1])
-                corr_list.append(corr_obj)
+                if correlation_coefficient[1] <= 0.1:
+                    corr_obj = build_obj('correlation', 'expression', 'expression',
+                                         True, data_source_one,
+                                         data_source_two, correlation_coefficient[0],
+                                         correlation_coefficient[1])
+                    corr_list.append(corr_obj)
 
                 t_value, p_value = ttest_ind(col_one, col_two, equal_var=False)
 
