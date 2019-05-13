@@ -8,7 +8,7 @@ import pandas as pd
 from scipy.stats.stats import pearsonr
 from scipy.stats import ttest_ind
 
-from urllib import urlopen
+from urllib import request
 import json
 import itertools
 
@@ -77,7 +77,7 @@ def build_obj(comp_type, data_one, data_two, show_chart, attr_one, attr_two,
     return target_obj
 
 
-def build_exp_methy_obj(comp_type, data_one, data_two, show_chart, attr_one, 
+def build_exp_methy_obj(comp_type, data_one, data_two, show_chart, attr_one,
                         attr_two, value, pvalue, data=None, ranges=None):
 
     target_obj = {
@@ -94,7 +94,7 @@ def build_exp_methy_obj(comp_type, data_one, data_two, show_chart, attr_one,
     return target_obj
 
 
-def build_exp_singlegene_obj(comp_type, data_one, data_two, show_chart, attr_one, attr_two, 
+def build_exp_singlegene_obj(comp_type, data_one, data_two, show_chart, attr_one, attr_two,
                             value, pvalue=None, gene=None, data=None, ranges=None):
 
     target_obj = {

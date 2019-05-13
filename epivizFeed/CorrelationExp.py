@@ -4,10 +4,10 @@ import math
 import json
 import itertools
 from scipy.stats.stats import pearsonr, ttest_ind
-from old_feed.utils import build_obj
-from old_feed.UI_functions import format_exp_methy_output
+from epivizFeed.utils import build_obj
+from epivizFeed.UI_functions import format_exp_methy_output
 from epivizFeed.StatMethod import StatMethod
-from old_feed.data_functions import Gene_data, Methylation
+from epivizFeed.data_functions import Gene_data, Methylation
 
 
 class CorrelationExp(StatMethod):

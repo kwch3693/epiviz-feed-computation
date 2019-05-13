@@ -4,10 +4,10 @@ import logging
 import math
 import json
 import itertools
-from old_feed.utils import build_obj
+from epivizFeed.utils import build_obj
 from scipy.stats import ttest_ind, fisher_exact, norm
 from epivizFeed.StatMethod import StatMethod
-from old_feed.data_functions import Block_data
+from epivizFeed.data_functions import Block_data
 
 
 class OverlapBlock(StatMethod):

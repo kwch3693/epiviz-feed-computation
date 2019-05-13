@@ -4,10 +4,10 @@ import logging
 import itertools
 import pandas as pd
 from scipy.stats import ttest_ind, norm
-from old_feed.requests import get_sample_counts
-from old_feed.utils import build_obj, format_expression_block_data, build_exp_singlegene_obj
+from epivizFeed.requests import get_sample_counts
+from epivizFeed.utils import build_obj, format_expression_block_data, build_exp_singlegene_obj
 from epivizFeed.StatMethod import StatMethod
-from old_feed.data_functions import Gene_data
+from epivizFeed.data_functions import Gene_data
 
 
 class TtestGene(StatMethod):

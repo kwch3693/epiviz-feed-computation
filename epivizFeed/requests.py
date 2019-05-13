@@ -7,8 +7,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats.stats import pearsonr
 from scipy.stats import ttest_ind
-
-import urllib2 as urllib_req
+from urllib import request
 import json
 import itertools
 
@@ -44,8 +43,8 @@ def get_url_data(data_source, measurements=None, chromosome=None,
 
     # get data
     print(sql_url)
-    req = urllib_req.Request(sql_url)
-    response = urllib_req.urlopen(req)
+    # req = urllib_req.Request(sql_url)
+    response = request.urlopen(sql_url)
     a = json.loads(response.read())
 
     # check if it's an error message in the response, if it is, there's nothing coming back, we should skip the computation
@@ -190,9 +189,9 @@ def get_sample_counts(measurements, start_seq, end_seq, chromosome):
         sql_url += '&end=' + str(end_seq)
 
     # get data
-    req = urllib_req.Request(sql_url)
+    #req = urllib_req.Request(sql_url)
     print('hi' + sql_url)
-    response = urllib_req.urlopen(req)
+    response = request.urlopen(sql_url)
     a = json.loads(response.read())
 
     if a["error"]:
