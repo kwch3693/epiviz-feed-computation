@@ -18,6 +18,7 @@ class TtestGene(StatMethod):
         self.gene_types = super(TtestGene, self).get_measurements_self("gene")
 
     def ttest_calculations(self, row, gene1, gene2, sample_counts):
+        corr_obj = []
         gene_norm = gene1["id"]
         gene_cancer = gene2["id"]
         one = row[gene_norm]

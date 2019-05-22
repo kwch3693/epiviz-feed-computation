@@ -69,6 +69,7 @@ class CorrelationExpMethy(StatMethod):
         return mean
 
     def create_corr_obj(self, exp_diff, methy_col, tissue_type, corr_coef):
+        corr_obj = []
         data = format_exp_methy_output(exp_diff, methy_col, "Expression diff "
             + tissue_type,  'Collapsed Methylation Diff ' + tissue_type)
 
