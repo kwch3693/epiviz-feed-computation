@@ -22,7 +22,7 @@ class TtestBlock(StatMethod):
 
         blocks = pd.DataFrame(columns=exp_types)
         # boolean formula for finding expression block overlap
-        in_block = ((exp_srt <= end) & (exp_end >= start)) | ((exp_end >= start) & (exp_end <= end)) | ((exp_srt >= start) & (exp_srt <= end))
+        in_block = ((exp_srt <= end) & (exp_end >= end)) | ((exp_srt <= start) & (exp_end >= start)) | ((exp_end >= start) & (exp_end <= end)) | ((exp_srt >= start) & (exp_srt <= end))
         # queries the dataframe where expressions are in/overlap blocks and drops nan values
         exp_indices = list((exp_data.where(in_block)['index_col']).dropna().unique())
         # gets rows at exp_indices keeping only the exp types cols
@@ -34,18 +34,15 @@ class TtestBlock(StatMethod):
         exp_nonblock[block_type] = exp_nonblock.get(block_type, pd.DataFrame(columns=exp_types)).append(nonblocks)
 
     def ttest_calculation(self, gene_block_exp, gene_per_nonblock_exp, exp_type, block_type, pd_block, pd_expression):
-
+        ttest_obj = None
         gene_nonblock_exp = gene_per_nonblock_exp[exp_type]
         t_value, p_value = ttest_ind(gene_block_exp, gene_nonblock_exp, equal_var=False)
 
-        print("block:" + block_type + ", gene:" + exp_type)
-        print(p_value)
-
         gene_ds = json.loads(pd_expression.loc[pd_expression['id'] == exp_type].to_json(orient='records')[1: -1])
         block_ds = json.loads(pd_block.loc[pd_block['id'] == block_type].to_json(orient='records')[1: -1])
-
-        data = format_expression_block_data(gene_block_exp, gene_nonblock_exp)
-        ttest_obj = build_obj('t-test', 'expression', 'block', False, gene_ds, block_ds, t_value, p_value, data)
+        if p_value <= 0.1:
+            data = format_expression_block_data(gene_block_exp, gene_nonblock_exp)
+            ttest_obj = build_obj('t-test', 'expression', 'block', False, gene_ds, block_ds, t_value, p_value, data)
 
         return ttest_obj
 
@@ -84,16 +81,18 @@ class TtestBlock(StatMethod):
         for block_type, gene_per_block_exp in gene_expression_block.items():
             exp_types = list(gene_per_block_exp.columns)
             gene_per_nonblock_exp = gene_expression_nonblock[block_type]
-
-            for exp_type in exp_types:
+            for exp_type in gene_per_block_exp:
+            #for exp_type in exp_types:
                 gene_block_exp = gene_per_block_exp[exp_type]
 
                 if not gene_block_exp.empty:
                     gene_nonblock_exp = gene_per_nonblock_exp[exp_type]
-                    ttest_obj = self.ttest_calculation(gene_block_exp, gene_per_nonblock_exp, exp_type, block_type, pd_block, pd_expression)
-                    results.append(ttest_obj)
+                    # this is to ensure the output value of t-test is not nan, e.g., when len(gene_block_exp) == 1, ttest_ind would produce nan result.
+                    if len(gene_block_exp) >= 2 and len(gene_nonblock_exp) >= 2:
+                        ttest_obj = self.ttest_calculation(gene_block_exp, gene_per_nonblock_exp, exp_type, block_type, pd_block, pd_expression)
+                        if ttest_obj is not None:
+                            results.append(ttest_obj)
 
-        results = sorted(results, key=lambda x: x['value'], reverse=True)
         ttest_res = pd.Series(results)
         ttest_res = ttest_res.apply(pd.Series)
         ttest_res = ttest_res.to_json(orient='records')

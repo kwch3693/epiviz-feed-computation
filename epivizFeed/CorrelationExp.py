@@ -66,17 +66,22 @@ class CorrelationExp(StatMethod):
 
         group_one, group_two = self.partion(part_type, g_one)
         exp_group_one = Gene_data(start, end, chromosome, measurements=group_one.to_dict('records'))
+        exp_group_two = Gene_data(start, end, chromosome, measurements=group_two.to_dict('records'))
 
         group_one = [c for c in exp_group_one.columns if "_" in c]
         group_one = self.to_list_of_dict(group_one)
 
-        if part_type is not None:
-            exp_group_two = Gene_data(start, end, chromosome, measurements=group_two.to_dict('records'))
-            group_two = [c for c in exp_group_two.columns if "_" in c]
-            group_two = self.to_list_of_dict(group_two)
-            group_pairs = [(x, y) for x in group_one for y in group_two]
-        else:
-            group_pairs = itertools.combinations(group_one, 2)
+        group_two = [c for c in exp_group_two.columns if "_" in c]
+        group_two = self.to_list_of_dict(group_two)
+        g1_pairs = [i for i in itertools.combinations(group_one, 2)]
+        g2_pairs = [i for i in itertools.combinations(group_two, 2)]
+
+        group_pairs = [(x, y) for x in group_one for y in group_two]
+        group_pairs = group_pairs + g1_pairs + g2_pairs
+        # if part_type is not None:
+
+        # else:
+        #     group_pairs = itertools.combinations(group_one, 2)
         # pvalue_list = []
         #for data_source_one, data_source_two in itertools.combinations(self.gene_types, 2):
         for data_source_one, data_source_two in group_pairs:
