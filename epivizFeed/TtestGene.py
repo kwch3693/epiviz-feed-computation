@@ -38,9 +38,9 @@ class TtestGene(StatMethod):
             "type": gene2["name"],
             "value": two
         }]
-        if p_value <= 0.1:
-            corr_obj = build_exp_singlegene_obj('Binomial test difference in proportions', 'expression', 'expression', True, gene1,
-                                                    gene2, abs(ttest_value), pvalue=p_value, gene=row['gene'], data=data)
+
+        corr_obj = build_exp_singlegene_obj('Binomial test difference in proportions', 'expression', 'expression',
+                    True, gene1, gene2, abs(ttest_value), pvalue=p_value, gene=row['gene'], data=data)
         return corr_obj
 
     def partion(self, type, group_one, group_two=None):

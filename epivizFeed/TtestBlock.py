@@ -34,9 +34,15 @@ class TtestBlock(StatMethod):
         exp_nonblock[block_type] = exp_nonblock.get(block_type, pd.DataFrame(columns=exp_types)).append(nonblocks)
 
     def ttest_calculation(self, gene_block_exp, gene_per_nonblock_exp, exp_type, block_type, pd_block, pd_expression):
-        ttest_obj = None
+        ttest_obj = []
         gene_nonblock_exp = gene_per_nonblock_exp[exp_type]
         t_value, p_value = ttest_ind(gene_block_exp, gene_nonblock_exp, equal_var=False)
+
+        print("block:" + block_type + ", gene:" + exp_type)
+        print(p_value)
+
+        if p_value > 0.1:
+            return None
 
         gene_ds = json.loads(pd_expression.loc[pd_expression['id'] == exp_type].to_json(orient='records')[1: -1])
         block_ds = json.loads(pd_block.loc[pd_block['id'] == block_type].to_json(orient='records')[1: -1])
@@ -82,7 +88,6 @@ class TtestBlock(StatMethod):
             exp_types = list(gene_per_block_exp.columns)
             gene_per_nonblock_exp = gene_expression_nonblock[block_type]
             for exp_type in gene_per_block_exp:
-            #for exp_type in exp_types:
                 gene_block_exp = gene_per_block_exp[exp_type]
 
                 if not gene_block_exp.empty:

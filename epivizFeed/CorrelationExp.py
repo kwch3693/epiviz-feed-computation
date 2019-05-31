@@ -82,6 +82,17 @@ class CorrelationExp(StatMethod):
 
         # else:
         #     group_pairs = itertools.combinations(group_one, 2)
+        # if part_type is not None:
+        #     exp_group_two = Gene_data(start, end, chromosome, measurements=group_two.to_dict('records'))
+        #     group_two = [c for c in exp_group_two.columns if "_" in c]
+        #     group_two = self.to_list_of_dict(group_two)
+        #     group_pairs = [(x, y) for x in group_one for y in group_two]
+        # else:
+        #     group_pairs = itertools.combinations(group_one, 2)
+
+        # # all combinations of gene expressions
+        # # TODO (Kyle?): simplify the above code
+        # group_pairs = itertools.combinations(group_one + group_two, 2)
         # pvalue_list = []
         #for data_source_one, data_source_two in itertools.combinations(self.gene_types, 2):
         for data_source_one, data_source_two in group_pairs:
